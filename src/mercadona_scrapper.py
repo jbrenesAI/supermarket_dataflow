@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -7,10 +8,7 @@ import random
 
 class MercadonaScrapper:
     login_url = 'https://www.telecompra.mercadona.es/ns/entrada.php?js=1'
-    credentials = {
-        'username': 'biec.jdrzm22@pihey.com',
-        'password': '****'
-    }
+    credentials = {}
     product_ids = []
     search_url = 'https://www.telecompra.mercadona.es/lista.php?busc_ref=%s&posicion_actual=%s'
 
@@ -21,8 +19,19 @@ class MercadonaScrapper:
         self.names = []
         self.price_desc = []
         self.driver = webdriver.Chrome()
+        self.credentials_path = os.path.join(os.path.abspath(os.path.join(os.getcwd(), os.pardir)), 'credentials.txt')
         self.driver.implicitly_wait(2)
+        self.credentials = self.get_credentials()
         self.login()
+
+    def get_credentials(self):
+        cred_dict = {}
+        with open(self.credentials_path, 'r') as credentials:
+            for line in credentials.readlines():
+                print(line)
+                split_line = line.split()
+                cred_dict[split_line[0]] = split_line[1]
+        return cred_dict
 
     def login(self):
         self.driver.get(self.login_url)
@@ -61,8 +70,7 @@ class MercadonaScrapper:
             self.reload_on_ban()
             self.parse_elements()
 
-            if random.random() > .65:
-                time.sleep(5)
+            time.sleep(random.random() * 10)
 
     def next_page(self):
         self.item = self.item + 20
