@@ -43,7 +43,7 @@ class MercadonaScrapper:
     def get_products(self):
         self.products = {}
 
-        print("Starting to scrap mercadona data")
+        print("Starting to scrap mercadona raw_data")
         tic = time.time()
 
         self.search_products()
