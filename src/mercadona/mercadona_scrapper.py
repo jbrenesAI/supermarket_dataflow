@@ -1,6 +1,5 @@
 import os
 from selenium import webdriver
-from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 import time
 import random
@@ -28,7 +27,6 @@ class MercadonaScrapper:
         cred_dict = {}
         with open(self.credentials_path, 'r') as credentials:
             for line in credentials.readlines():
-                print(line)
                 split_line = line.split()
                 cred_dict[split_line[0]] = split_line[1]
         return cred_dict
@@ -97,8 +95,8 @@ class MercadonaScrapper:
     def find_css_elements(self, css):
         try:
             return self.driver.find_elements(By.CSS_SELECTOR, css)
-        except NoSuchElementException:
-            return []
+        except Exception as  e:
+            return print(str(e))
 
     def __del__(self):
         try:
